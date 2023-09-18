@@ -3,18 +3,24 @@ package com.example.homeworkfragments
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.homeworkfragments.databinding.ItemBinding
 
-class SuperheroRecyclerViewAdapter (
-    var items:MutableList<Superheroes> = mutableListOf(),
+class SuperheroRecyclerViewAdapter(
+    var items: MutableList<Superheroes> = mutableListOf(),
     var onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<SuperheroRecyclerViewAdapter.SuperheroRecyclerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SuperheroRecyclerViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
-        return SuperheroRecyclerViewHolder(view)
+        return SuperheroRecyclerViewHolder(
+            ItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun getItemCount(): Int = items.size
@@ -24,30 +30,32 @@ class SuperheroRecyclerViewAdapter (
         holder.superheroSlug.text = String.format("Slug: ${items[position].slug}")
         holder.superheroGender.text = String.format("Gender: ${items[position].appearance?.gender}")
         holder.superheroRace.text = String.format("Race: ${items[position].appearance?.race}")
+
         Glide.with(holder.superheroImage)
             .load(items[position].images?.lg)
             .into(holder.superheroImage)
 
-        holder.bind(items[position], onItemClickListener)
+        holder.itemView.setOnClickListener {
+            onItemClickListener.onItemClick(items[position])
+        }
     }
 
     interface OnItemClickListener {
-        fun onItemClick(item:Superheroes)
+        fun onItemClick(item: Superheroes)
     }
 
-    class SuperheroRecyclerViewHolder(item:View):RecyclerView.ViewHolder(item) {
-        val binding = ItemBinding.bind(item)
+    inner class SuperheroRecyclerViewHolder(binding: ItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         val superheroImage = binding.superheroImage
         val superheroName = binding.superheroName
         val superheroSlug = binding.superheroSlug
         val superheroGender = binding.superheroGender
         val superheroRace = binding.superheroRace
 
-        fun bind(item: Superheroes, onItemClickListener: OnItemClickListener) = with(binding) {
-            onItemClickListener.onItemClick(item)
-        }
-
+//        init {
+//            binding.root.setOnClickListener {
+//                Toast.makeText(it.context, "Done", Toast.LENGTH_SHORT).show()
+//            }
+//        }
     }
 }
-
-

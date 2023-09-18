@@ -2,7 +2,6 @@ package com.example.homeworkfragments
 
 import ApiClient
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +13,9 @@ import com.google.gson.annotations.SerializedName
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class ListFragment : Fragment(), SuperheroRecyclerViewAdapter.OnItemClickListener {
+class ListFragment : Fragment(), SuperheroRecyclerViewAdapter.OnItemClickListener{
     private lateinit var binding: ListFragmentLayoutBinding
+    private var onItemClick:(String) -> Unit = {}
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +47,11 @@ class ListFragment : Fragment(), SuperheroRecyclerViewAdapter.OnItemClickListene
     }
 
     override fun onItemClick(item: Superheroes) {
-        Toast.makeText(requireContext(), "Done", Toast.LENGTH_LONG).show()
+
+    }
+
+    fun setItemClickListener(lambda: (String)-> Unit) {
+        onItemClick = lambda
     }
 }
 

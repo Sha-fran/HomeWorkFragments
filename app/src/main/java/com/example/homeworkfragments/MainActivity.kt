@@ -11,5 +11,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val listFragment = supportFragmentManager.findFragmentById(R.id.fragment_in_main_activity) as ListFragment
+
+        listFragment.setItemClickListener {
+            val detailsFragment = DetailsFragment()
+            supportFragmentManager.beginTransaction()
+                .add(R.id.details_fragment, detailsFragment)
+                .addToBackStack(null)
+                .commit()
+        }
     }
 }
