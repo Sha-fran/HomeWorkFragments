@@ -15,7 +15,7 @@ import io.reactivex.schedulers.Schedulers
 
 class ListFragment : Fragment(), SuperheroRecyclerViewAdapter.OnItemClickListener{
     private lateinit var binding: ListFragmentLayoutBinding
-    private var onItemClick:(String) -> Unit = {}
+    private var onItemClick:(item: Superheroes) -> Unit = {}
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,17 +40,17 @@ class ListFragment : Fragment(), SuperheroRecyclerViewAdapter.OnItemClickListene
                 adapter.notifyDataSetChanged()
                 binding.superheroRecyclerview.adapter = adapter
             },
-            {
-                Toast.makeText(requireContext(), "Error", Toast.LENGTH_LONG).show()
-            })
+                {
+                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_LONG).show()
+                })
         binding.superheroRecyclerview.layoutManager = LinearLayoutManager(requireContext())
     }
 
     override fun onItemClick(item: Superheroes) {
-
+        onItemClick.invoke(item)
     }
 
-    fun setItemClickListener(lambda: (String)-> Unit) {
+    fun setItemClickListener(lambda: (item: Superheroes)-> Unit) {
         onItemClick = lambda
     }
 }
