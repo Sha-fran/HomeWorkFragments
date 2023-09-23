@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.homeworkfragments.databinding.ItemBinding
 
 class SuperheroRecyclerViewAdapter(
-    var items: MutableList<Superheroes> = mutableListOf(),
+    var items: MutableList<DataClasses.Superheroes> = mutableListOf(),
     var onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<SuperheroRecyclerViewAdapter.SuperheroRecyclerViewHolder>() {
 
@@ -35,13 +35,13 @@ class SuperheroRecyclerViewAdapter(
             .load(items[position].images?.lg)
             .into(holder.superheroImage)
 
-        holder.itemView.setOnClickListener {
+        holder.container.setOnClickListener {
             onItemClickListener.onItemClick(items[position])
         }
     }
 
     interface OnItemClickListener {
-        fun onItemClick(item: Superheroes)
+        fun onItemClick(item: DataClasses.Superheroes)
     }
 
     inner class SuperheroRecyclerViewHolder(binding: ItemBinding) :
@@ -51,11 +51,6 @@ class SuperheroRecyclerViewAdapter(
         val superheroSlug = binding.superheroSlug
         val superheroGender = binding.superheroGender
         val superheroRace = binding.superheroRace
-
-//        init {
-//            binding.root.setOnClickListener {
-//                Toast.makeText(it.context, "Done", Toast.LENGTH_SHORT).show()
-//            }
-//        }
+        val container = binding.constraintLayoutItem
     }
 }
